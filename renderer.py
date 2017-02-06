@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import sys, pygame
+import sys, pygame, GameObject
 pygame.init()
 
 # Define the colors we will use in RGB format
@@ -19,7 +19,8 @@ pygame.display.set_caption("Example code for the draw module")
 #Loop until the user clicks the close button.
 done = False
 clock = pygame.time.Clock()
-
+handimage = pygame.image.load('hand.png').convert_alpha()
+hand = GameObject.GameObject(handimage, 10, 1)
 f = file("ex.svg", "r")
 html_doc = f.read();
 f.close()
@@ -93,7 +94,6 @@ while not done:
  
     # This limits the while loop to a max of 10 times per second.
     # Leave this out and we will use all CPU we can.
-    clock.tick(10000)
     screen.fill(BLACK)
     renderSVG(svg)
     
@@ -101,7 +101,10 @@ while not done:
         if event.type == pygame.QUIT: # If user clicked close
             done=True # Flag that we are done so we exit this loop
 
+    hand.move()
+    screen.blit(hand.image, hand.pos)
     pygame.display.flip()
+    pygame.time.delay(10)
     #break
 
 pygame.display.quit()
