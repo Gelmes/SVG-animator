@@ -111,7 +111,7 @@ while not done:
     hand.move()
     screen.blit(hand.image, hand.pos)
     pygame.display.flip()
-    pygame.time.delay(100)
+    pygame.time.delay(10)
     #break
 
 pygame.display.quit()

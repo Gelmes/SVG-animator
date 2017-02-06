@@ -12,15 +12,22 @@ class GameObject:
             self.goal = self.path.get()
 
         if(self.goal[1] - self.pos[1] != 0):
-            angle = math.atan((self.goal[0] - self.pos[0]) /\
-                                (self.goal[1] - self.pos[1]))
+            angle = math.atan((float(self.goal[1]) - float(self.pos[1])) /\
+                                (float(self.goal[0]) - float(self.pos[0])))
         else:
             angle = math.pi / 2.0
+        ogangle = angle
+        angle = abs(angle) # + math.pi/2
+        if((self.goal[1] - self.pos[1]) < 0):
+            angle = angle * -1        
+        if((self.goal[0] - self.pos[0]) < 0):
+            angle =  math.pi - angle
+        
         x = self.speed * math.cos(angle)
         y = self.speed * math.sin(angle)
 
-        print self.goal, self.pos, angle, x, y
-        self.pos = self.pos.move(y, x)
+        print self.goal, self.pos, math.degrees(ogangle), math.degrees(angle), x, y
+        self.pos = self.pos.move(x, y)
         if self.pos.right > 1280:
             self.pos.left = 0
     def addPoint(self, point):
