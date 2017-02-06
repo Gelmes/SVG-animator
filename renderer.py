@@ -27,7 +27,7 @@ html_doc = f.read();
 f.close()
 svg = BeautifulSoup(html_doc, 'html.parser')
 def drawLine(pos1, pos2):
-    pygame.draw.line(screen, WHITE, pos1, pos2, 5)
+    pygame.draw.aaline(screen, WHITE, pos1, pos2, 5)
     hand.addPoint(pos1)
     hand.addPoint(pos2)
     
@@ -46,6 +46,7 @@ def renderPolyline(poly):
 
 def renderPath(path,steps):
     curves = path['d'].replace("c","cp,")\
+                    .replace("C","cP,")\
                     .replace("M","")\
                     .replace("-",",-")\
                     .split("c")
@@ -58,12 +59,21 @@ def renderPath(path,steps):
         prevp = [m0, m1]
         x0 = m0
         y0 = m1
-        x1 = m0 + float(c[1])
-        y1 = m1 + float(c[2])
-        x2 = m0 + float(c[3])
-        y2 = m1 + float(c[4])
-        x3 = m0 + float(c[5])
-        y3 = m1 + float(c[6])
+        if(c[0] == "p"):
+            x1 = m0 + float(c[1])
+            y1 = m1 + float(c[2])
+            x2 = m0 + float(c[3])
+            y2 = m1 + float(c[4])
+            x3 = m0 + float(c[5])
+            y3 = m1 + float(c[6])
+        elif(c[0] =="P"):
+            x1 = float(c[1])
+            y1 = float(c[2])
+            x2 = float(c[3])
+            y2 = float(c[4])
+            x3 = float(c[5])
+            y3 = float(c[6])
+            
         step_size = 1.0/steps
         t = 0
         for s in range(steps):

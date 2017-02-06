@@ -1,14 +1,14 @@
 import Queue, math
 class GameObject:
     def __init__(self, image, height, speed):
-        self.speed = speed
+        self.speed = float(speed)
         self.image = image
         self.pos = image.get_rect().move(0, height)
         self.path = Queue.Queue()
         self.goal = [0,height]
     def move(self):
-        if(abs(self.pos[0] - self.goal[0]) < (self.speed + 5.0) and \
-           abs(self.pos[1] - self.goal[1]) < (self.speed + 5.0)):
+        if(abs(self.pos[0] - self.goal[0]) < (self.speed + 1) and \
+           abs(self.pos[1] - self.goal[1]) < (self.speed + 1)):
             self.goal = self.path.get()
 
         if(self.goal[1] - self.pos[1] != 0):
@@ -26,10 +26,10 @@ class GameObject:
         x = self.speed * math.cos(angle)
         y = self.speed * math.sin(angle)
 
-        print self.goal, self.pos, math.degrees(ogangle), math.degrees(angle), x, y
+        #print self.goal, self.pos, math.degrees(ogangle), math.degrees(angle), x, y
         self.pos = self.pos.move(x, y)
-        if self.pos.right > 1280:
-            self.pos.left = 0
+        #if self.pos.right > 1280:
+        #    self.pos.left = 0
     def addPoint(self, point):
         self.path.put(point)
 
