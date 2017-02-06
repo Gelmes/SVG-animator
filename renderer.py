@@ -20,8 +20,9 @@ pygame.display.set_caption("Example code for the draw module")
 done = False
 clock = pygame.time.Clock()
 
-f = file("example.svg", "r")
+f = file("ex.svg", "r")
 html_doc = f.read();
+f.close()
 svg = BeautifulSoup(html_doc, 'html.parser')
 def renderPolyline(poly):
     points = poly['points'].replace("\n\t","").split(" ")
@@ -36,24 +37,63 @@ def renderPolyline(poly):
         pygame.draw.line(screen, GREEN, prevp, p, 5)
         prevp = p
 
+def renderPath(path,steps):
+    curves = path['d'].replace("c","cp,")\
+                    .replace("M","")\
+                    .replace("-",",-")\
+                    .split("c")
+    m = curves[0].split(",")
+    m0 = int(float(m[0]))
+    m1 = int(float(m[1]))
+    for curve in curves[1:]:
+        curve = curve.replace(",,",",")
+        c = curve.split(",")
+        prevp = [m0, m1]
+        x0 = m0
+        y0 = m1
+        x1 = m0 + float(c[1])
+        y1 = m1 + float(c[2])
+        x2 = m0 + float(c[3])
+        y2 = m1 + float(c[4])
+        x3 = m0 + float(c[5])
+        y3 = m1 + float(c[6])
+        step_size = 1.0/steps
+        t = 0
+        for s in range(steps):
+            t = t + step_size
+            x = ((1-t)*(1-t)*(1-t)*x0) +\
+                (3*(1-t)*(1-t)*t*x1) +\
+                (3*(1-t)*t*t*x2) +\
+                (t*t*t*x3)         
+            y = ((1-t)*(1-t)*(1-t)*y0) +\
+                (3*(1-t)*(1-t)*t*y1) +\
+                (3*(1-t)*t*t*y2) +\
+                (t*t*t*y3)
+            #print int(x), int(y), t
+            pygame.draw.line(screen, GREEN, prevp, [x,y], 5)
+            prevp = [x, y]
+            
+
 def renderSVG(soup):
     for tag in soup.find_all():
         n = tag.name
         if(n == "polyline"):
             print "Poly"
             renderPolyline(tag)
+        if(n == "line"):
+            print "Line"
         elif(n =="path"):
             print "Path"
+            renderPath(tag, 20)
         elif(n =="rect"):
             print "Rect"
-            print int(tag['x']) + int(tag['y'])
 
 
 while not done:
  
     # This limits the while loop to a max of 10 times per second.
     # Leave this out and we will use all CPU we can.
-    clock.tick(10)
+    clock.tick(10000)
     screen.fill(BLACK)
     renderSVG(svg)
     
