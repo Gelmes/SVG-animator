@@ -12,6 +12,7 @@ RED =   (255,   0,   0)
 size = width, heignt = 1280, 800
 speed = [2, 2]
 black = 0, 0, 0
+movement_path = []
 
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Example code for the draw module")
@@ -20,11 +21,16 @@ pygame.display.set_caption("Example code for the draw module")
 done = False
 clock = pygame.time.Clock()
 handimage = pygame.image.load('hand.png').convert_alpha()
-hand = GameObject.GameObject(handimage, 10, 1)
+hand = GameObject.GameObject(handimage, 10, 5)
 f = file("ex.svg", "r")
 html_doc = f.read();
 f.close()
 svg = BeautifulSoup(html_doc, 'html.parser')
+def drawLine(pos1, pos2):
+    pygame.draw.line(screen, WHITE, pos1, pos2, 5)
+    hand.addPoint(pos1)
+    hand.addPoint(pos2)
+    
 def renderPolyline(poly):
     points = poly['points'].replace("\n\t","").split(" ")
     pointlist = []
@@ -35,7 +41,7 @@ def renderPolyline(poly):
     prevp = pointlist[0]
 
     for p in pointlist[1:]:
-        pygame.draw.line(screen, GREEN, prevp, p, 5)
+        drawLine(prevp, p)
         prevp = p
 
 def renderPath(path,steps):
@@ -70,8 +76,7 @@ def renderPath(path,steps):
                 (3*(1-t)*(1-t)*t*y1) +\
                 (3*(1-t)*t*t*y2) +\
                 (t*t*t*y3)
-            #print int(x), int(y), t
-            pygame.draw.line(screen, GREEN, prevp, [x,y], 5)
+            drawLine(prevp, [x, y])
             prevp = [x, y]
             
 
@@ -79,15 +84,17 @@ def renderSVG(soup):
     for tag in soup.find_all():
         n = tag.name
         if(n == "polyline"):
-            print "Poly"
+            #print "Poly"
             renderPolyline(tag)
         if(n == "line"):
-            print "Line"
+            #print "Line"
+            pass
         elif(n =="path"):
-            print "Path"
+            #print "Path"
             renderPath(tag, 20)
         elif(n =="rect"):
-            print "Rect"
+            #print "Rect"
+            pass
 
 
 while not done:
@@ -104,7 +111,7 @@ while not done:
     hand.move()
     screen.blit(hand.image, hand.pos)
     pygame.display.flip()
-    pygame.time.delay(10)
+    pygame.time.delay(100)
     #break
 
 pygame.display.quit()
