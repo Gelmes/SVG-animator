@@ -28,12 +28,13 @@ svg = BeautifulSoup(html_doc, 'html.parser')
 
 #========================================== Global Stuff
 lines = [] #Lines that will be rendered every frame
+frame_number = 0
 
 #========================================== Main Functions
 def save_line(pos1, pos2):
     #pygame.draw.aaline(screen, WHITE, pos1, pos2, 5)
-    hand.add_point(pos1)
-    hand.add_point(pos2)
+    #hand.add_point(pos1)
+    #hand.add_point(pos2)
     lines.append([pos1,pos2]) #[[x0,y0],[x1,y1]]
     
     
@@ -112,7 +113,7 @@ def renderSVG(soup):
 
 def render_lines(lines):
     for line in lines:
-        pygame.draw.aaline(screen, WHITE, line[0], line[1], 5)
+        pygame.draw.line(screen, WHITE, line[0], line[1], 5)
 
 renderSVG(svg)
 hand.add_lines(lines)
@@ -122,16 +123,20 @@ while not done:
     # This limits the while loop to a max of 10 times per second.
     # Leave this out and we will use all CPU we can.
     screen.fill(BLACK)
-    render_lines(lines)
+    #render_lines(lines)
     for event in pygame.event.get(): # User did something
         if event.type == pygame.QUIT: # If user clicked close
             done=True # Flag that we are done so we exit this loop
 
-    hand.move()
+    if(not hand.move()):
+        break
+        pass
+    render_lines(hand.render_lines)
     screen.blit(hand.image, hand.pos)
     pygame.display.flip()
+    #pygame.image.save(screen, "renders/img" + str(frame_number) + ".png")
+    #frame_number = frame_number + 1
     pygame.time.delay(10)
-    #break
 
 pygame.display.quit()
 sys.exit()

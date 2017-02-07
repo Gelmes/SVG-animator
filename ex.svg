@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-	 x="0px" y="0px" width="1280px" height="800px" viewBox="0 0 1280 800" overflow="scroll" xml:space="preserve">
-<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="97.5" y1="62" x2="97.5" y2="314"/>
-<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="97" y1="314.5" x2="371" y2="314.5"/>
-<rect x="317.5" y="247.5" fill="none" stroke="#000000" stroke-miterlimit="10" width="211" height="134"/>
-<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M749,234c0,0,13,177,120.5,120.5"/>
-<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M326,39c-49,45-13,231,185,138"/>
-<polyline fill="none" stroke="#000000" stroke-miterlimit="10" points="109,209 255,254 281,437.5 423,330 212.651,370.344 
-	238.651,190.094 "/>
-<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M715,381.5C654,479,532,99,485,292"/>
+<svg version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" width="1280px" height="800px" viewBox="0 0 1280 800" overflow="scroll" xml:space="preserve">
+<g id="Layer_1">
+	<polyline fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" points="235,303.5 259,303.5 265.5,286 
+		277.5,318.5 289.5,285.25 301.5,318.125 313.5,286.063 319.5,303.5 344,303.5 	"/>
+	<polyline fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" points="392.908,358.985 368.976,275.591 
+		448.792,205.483 353.039,172.005 437.914,259.037 343.451,303.466 	"/>
+	<line fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" x1="95.5" y1="62" x2="95.5" y2="314"/>
+	<line fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" x1="107" y1="416.5" x2="381" y2="416.5"/>
+	<rect x="141.5" y="64.5" fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" width="490" height="319"/>
+	<path fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M503,234c0,0,13,177,120.5,120.5"/>
+	<path fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M623.207,354.637
+		c11.022-65.609-131.642-190.264-230.751,4.75"/>
+	<path fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M503,234.5C442,332,320-48,273,145"/>
+	<polyline fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" points="274,145.5 250,145.5 243.5,128 
+		231.5,160.5 219.5,127.25 207.5,160.125 195.5,128.063 189.5,145.5 165,145.5 	"/>
+	<text transform="matrix(1 0 0 1 181.5 220.5)" font-family="'MyriadPro-Regular'" font-size="12">O</text>
+</g>
+<g id="Layer_2">
+</g>
 </svg>
