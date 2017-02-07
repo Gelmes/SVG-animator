@@ -13,6 +13,9 @@ class GameObject:
         self.lines = []
         self.render_lines = []
         self.counter = 0
+        self.on_a_line = 0 #Flag inicating if hand is on a line
+        self.starting_line_pos = [0,0] #Position of first point on current line
+        self.ending_line_pos = [0,0]
     def move(self):
         """
         Moves hand based on a list of points provided by the used
@@ -22,38 +25,75 @@ class GameObject:
         Returns true if the hand is succesfully moved
         """
         result = 1
-        #if (not self.path.empty()):
+
+        ###################################################################
+        #Empty list and collision detection
         if (self.counter < self.lines_len):
             if(abs(self.pos[0] - self.goal[0]) < (self.speed) and \
                abs(self.pos[1] - self.goal[1]) < (self.speed)):
-                #print self.goal, self.counter/2, self.counter%2
-                self.goal =  self.lines[self.counter/2][self.counter%2]
+                #Render Line only after second point is reached
+                self.counter = self.counter + 1
                 if(self.counter%2==1):
                     self.render_lines.append(self.lines[self.counter/2])
+                    line = self.lines[self.counter/2]
+                    self.starting_line_pos = line[0]
+                    self.ending_line_pos = line[1]
                     self.speed = self.speed_slow
-                self.counter = self.counter + 1
-            
+                    self.on_a_line = 1
+                else:
+                    
+                    try:
+                        self.render_lines.pop()
+                        self.render_lines.append([self.starting_line_pos,\
+                                                  self.ending_line_pos])
+                    except(IndexError):
+                        print "Empty List"
+                    
+                    self.on_a_line = 0
+                #Set next goal point
+                if(self.counter != self.lines_len):
+                    self.goal =  self.lines[self.counter/2][self.counter%2]            
         else:
             self.goal = self.end_pos
             self.speed = self.speed_fast
             if(abs(self.pos[0] - self.goal[0]) < (self.speed) and \
                abs(self.pos[1] - self.goal[1]) < (self.speed)):
                 result = 0
-            #print "Done Drawing"
+
+        ###################################################################
+        #Get angle to move hand towards
         if(self.goal[0] - self.pos[0] != 0):
             angle = math.atan((float(self.goal[1]) - float(self.pos[1])) /\
                                 (float(self.goal[0]) - float(self.pos[0])))
+        #Handle division by zero exception
         else:
             angle = math.pi / 2.0
-        angle = abs(angle) # + math.pi/2
+        angle = abs(angle)
+
+        ###################################################################
+        #If Y is negative inverse the angle
         if((self.goal[1] - self.pos[1]) < 0):
-            angle = angle * -1        
+            angle = angle * -1
+        #If X is negative get vertical mirror of angle
         if((self.goal[0] - self.pos[0]) < 0):
             angle =  math.pi - angle
         x = self.speed * math.cos(angle)
         y = self.speed * math.sin(angle)
         #print self.goal, self.pos, math.degrees(ogangle), math.degrees(angle), x, y
         self.pos = self.pos.move(x, y)
+
+        ###################################################################
+        #dynamic line rendering of current line is done here
+        
+        try:
+            if(self.on_a_line):
+                self.starting_line_pos = self.render_lines.pop()[0]
+                self.render_lines.append([self.starting_line_pos, \
+                                         [self.pos[0],self.pos[1]]])
+        except(IndexError):
+            print "Empty List"
+        
+            
         return result
         
     def move_lines(self):
@@ -63,8 +103,10 @@ class GameObject:
         self.path.put(point)
         
     def add_lines(self, lines):
+        #length is doubled to account for starting and ending points
         self.lines_len = len(lines) * 2
         self.lines = lines
+        self.goal = self.lines[0][0]
 
 
 
