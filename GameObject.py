@@ -19,9 +19,10 @@ class GameObject:
     def move(self):
         """
         Moves hand based on a list of points provided by the used
-
-        Future implementation should use a list of lines instead
-        and modify them so that they are drawn accordingly
+        These points are then updated at every call to this function
+        and new list is generated that contains the lines drawn up
+        to the point where the hand has moved.
+        
         Returns true if the hand is succesfully moved
         """
         result = 1
@@ -34,20 +35,19 @@ class GameObject:
                 #Render Line only after second point is reached
                 self.counter = self.counter + 1
                 if(self.counter%2==1):
-                    self.render_lines.append(self.lines[self.counter/2])
                     line = self.lines[self.counter/2]
+                    self.render_lines.append(line)
                     self.starting_line_pos = line[0]
                     self.ending_line_pos = line[1]
                     self.speed = self.speed_slow
                     self.on_a_line = 1
                 else:
-                    
                     try:
                         self.render_lines.pop()
                         self.render_lines.append([self.starting_line_pos,\
                                                   self.ending_line_pos])
                     except(IndexError):
-                        print "Empty List"
+                        pass
                     
                     self.on_a_line = 0
                 #Set next goal point
@@ -83,15 +83,14 @@ class GameObject:
         self.pos = self.pos.move(x, y)
 
         ###################################################################
-        #dynamic line rendering of current line is done here
-        
+        #dynamic line rendering of current line is done here        
         try:
             if(self.on_a_line):
                 self.starting_line_pos = self.render_lines.pop()[0]
                 self.render_lines.append([self.starting_line_pos, \
                                          [self.pos[0],self.pos[1]]])
         except(IndexError):
-            print "Empty List"
+            pass
         
             
         return result
@@ -107,6 +106,9 @@ class GameObject:
         self.lines_len = len(lines) * 2
         self.lines = lines
         self.goal = self.lines[0][0]
+
+    def get_lines(self):
+        return self.render_lines
 
 
 

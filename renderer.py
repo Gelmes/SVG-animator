@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import sys, pygame, GameObject
+import sys, pygame, GameObject, math
 #========================================== Pygae Stuff
 pygame.init()
 
@@ -8,6 +8,7 @@ WHITE = (255, 255, 255)
 BLUE =  (  0,   0, 255)
 GREEN = (  0, 255,   0)
 RED =   (255,   0,   0)
+MARINE = (62, 128, 62)
 
 size = width, height = 1280, 800
 speed = [2, 2]
@@ -110,10 +111,41 @@ def renderSVG(soup):
         elif(n =="rect"):
             #print "Rect"
             pass
+        
+def render_aaline(line, width):
+    w = width/2.0    
+    ###################################################################
+    #Get angle
+    if(line[0][0] - line[1][0] != 0):
+        angle = math.atan((float(line[1][1]) - float(line[0][1])) /\
+                            (float(line[1][0]) - float(line[0][0])))
+    #Handle division by zero exception
+    else:
+        angle = math.pi / 2.0
+    angle = abs(angle)
+
+    ###################################################################
+    #If Y is negative inverse the angle
+    if((line[1][1] -line[0][1]) < 0):
+        angle = angle * -1
+    #If X is negative get vertical mirror of angle
+    if((line[1][0] - line[0][0]) < 0):
+        angle =  math.pi - angle
+
+    v1 = [line[0][0] + w*math.sin(angle),line[0][1] - w*math.cos(angle)]
+    v2 = [line[1][0] + w*math.sin(angle),line[1][1] - w*math.cos(angle)]
+    v3 = [line[1][0] - w*math.sin(angle),line[1][1] + w*math.cos(angle)]
+    v4 = [line[0][0] - w*math.sin(angle),line[0][1] + w*math.cos(angle)]
+
+    pygame.draw.polygon(screen, WHITE, [v1,v2,v3,v4])
+    pygame.draw.circle(screen, WHITE, [int(line[0][0]),int(line[0][1])], int(w))
+    #pygame.draw.circle(screen, WHITE, [int(line[1][0]),int(line[1][1])], int(w))
+    #pygame.draw.aalines(screen, WHITE, True, [v1,v2,v3,v4])    
 
 def render_lines(lines):
     for line in lines:
-        pygame.draw.line(screen, WHITE, line[0], line[1], 5)
+        #pygame.draw.line(screen, WHITE, line[0], line[1], 3)
+        render_aaline(line, 3)       
 
 renderSVG(svg)
 hand.add_lines(lines)
@@ -122,21 +154,21 @@ while not done:
  
     # This limits the while loop to a max of 10 times per second.
     # Leave this out and we will use all CPU we can.
-    screen.fill(BLACK)
+    screen.fill(MARINE)
     #render_lines(lines)
     for event in pygame.event.get(): # User did something
         if event.type == pygame.QUIT: # If user clicked close
             done=True # Flag that we are done so we exit this loop
 
-    if(not hand.move()):
-        break
+    if(not hand.move()): #hand.move updates the line positions
+        #break
         pass
-    render_lines(hand.render_lines)
+    render_lines(hand.get_lines())
     screen.blit(hand.image, hand.pos)
     pygame.display.flip()
     #pygame.image.save(screen, "renders/img" + str(frame_number) + ".png")
     #frame_number = frame_number + 1
-    pygame.time.delay(10)
+    pygame.time.delay(20)
 
 pygame.display.quit()
 sys.exit()
