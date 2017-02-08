@@ -162,7 +162,7 @@ while not done:
             done=True # Flag that we are done so we exit this loop
 
     if(not hand.move()): #hand.move updates the line positions
-        #break
+        break
         pass
     render_lines(hand.get_lines())
     screen.blit(hand.image, hand.pos)

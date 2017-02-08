@@ -34,27 +34,13 @@ class GameObject:
                abs(self.pos[1] - self.goal[1]) < (self.speed)):
                 #Render Line only after second point is reached
                 self.counter = self.counter + 1
-                if(self.counter+1 >= self.lines_len):
+                if(self.counter >= self.lines_len):
+                    #self.counter = self.counter - 1
+                    self.handle_collision()                    
+                    self.counter = self.counter + 1
                     break
-                if(self.counter%2==1):
-                    line = self.lines[self.counter/2]
-                    self.render_lines.append(line)
-                    self.starting_line_pos = line[0]
-                    self.ending_line_pos = line[1]
-                    self.speed = self.speed_slow
-                    self.on_a_line = 1
-                else:
-                    try:
-                        self.render_lines.pop()
-                        self.render_lines.append([self.starting_line_pos,\
-                                                  self.ending_line_pos])
-                    except(IndexError):
-                        pass
-                    
-                    self.on_a_line = 0
-                #Set next goal point
-                if(self.counter != self.lines_len):
-                    self.goal =  self.lines[self.counter/2][self.counter%2]            
+                self.handle_collision()
+                          
         else:
             self.goal = self.end_pos
             self.speed = self.speed_fast
@@ -96,6 +82,26 @@ class GameObject:
         
             
         return result
+    def handle_collision(self):
+        if(self.counter%2==1):
+            line = self.lines[self.counter/2]
+            self.render_lines.append(line)
+            self.starting_line_pos = line[0]
+            self.ending_line_pos = line[1]
+            self.speed = self.speed_slow
+            self.on_a_line = 1
+        else:
+            try:
+                self.render_lines.pop()
+                self.render_lines.append([self.starting_line_pos,\
+                                          self.ending_line_pos])
+            except(IndexError):
+                pass
+            
+            self.on_a_line = 0
+        #Set next goal point
+        if(self.counter != self.lines_len):
+            self.goal =  self.lines[self.counter/2][self.counter%2]  
         
     def move_lines(self):
         pass
