@@ -30,10 +30,12 @@ class GameObject:
         ###################################################################
         #Empty list and collision detection
         if (self.counter < self.lines_len):
-            if(abs(self.pos[0] - self.goal[0]) < (self.speed) and \
+            while(abs(self.pos[0] - self.goal[0]) < (self.speed) and \
                abs(self.pos[1] - self.goal[1]) < (self.speed)):
                 #Render Line only after second point is reached
                 self.counter = self.counter + 1
+                if(self.counter+1 >= self.lines_len):
+                    break
                 if(self.counter%2==1):
                     line = self.lines[self.counter/2]
                     self.render_lines.append(line)

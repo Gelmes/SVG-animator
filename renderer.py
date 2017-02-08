@@ -4,6 +4,7 @@ import sys, pygame, GameObject, math
 pygame.init()
 
 BLACK = (  0,   0,   0)
+GRAY = (  100,   100,   100)
 WHITE = (255, 255, 255)
 BLUE =  (  0,   0, 255)
 GREEN = (  0, 255,   0)
@@ -19,7 +20,7 @@ pygame.display.set_caption("Example code for the draw module")
 done = False
 clock = pygame.time.Clock()
 handimage = pygame.image.load('hand.png').convert_alpha()
-hand = GameObject.GameObject(handimage, 10, 5, size)
+hand = GameObject.GameObject(handimage, 10, 25, size)
 
 #========================================== BeautifulSoup Stuff
 f = file("ex.svg", "r")
@@ -144,8 +145,8 @@ def render_aaline(line, width):
 
 def render_lines(lines):
     for line in lines:
-        #pygame.draw.line(screen, WHITE, line[0], line[1], 3)
-        render_aaline(line, 3)       
+        #pygame.draw.line(screen, WHITE, line[0], line[1], 6)
+        render_aaline(line, 5)       
 
 renderSVG(svg)
 hand.add_lines(lines)
@@ -154,7 +155,7 @@ while not done:
  
     # This limits the while loop to a max of 10 times per second.
     # Leave this out and we will use all CPU we can.
-    screen.fill(MARINE)
+    screen.fill(BLACK)
     #render_lines(lines)
     for event in pygame.event.get(): # User did something
         if event.type == pygame.QUIT: # If user clicked close
